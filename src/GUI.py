@@ -1,20 +1,17 @@
 from tkinter import Tk, ttk
+from strings import WRONGFORMAT
+from PIL import Image, ImageTk
+
 
 import Images.Notations as N
 
 
-
-
-def getNotationList():
-    with open("notationlist.txt", 'r') as f:
-        list = f.read().lower()
-    return list
-
-
 class Window(Tk):
-    def __init__(self):
-        self.notations = getNotationList()
+    def __init__(self, notationChecker, imageGenerator):
         super().__init__()
+        self.notationChecker = notationChecker
+        self.imageGen = imageGenerator
+
         style1 = ttk.Style()
         style1.configure("BW.TLabel", foreground="black", background="white")
 
@@ -22,24 +19,31 @@ class Window(Tk):
 
         self.EntryBox = ttk.Entry(text="Test", style="BW.TLabel")
         self.inputBtn = ttk.Button(text="add Notation")
-        self.inputBtn.bind("<Button>", self.inputBtnFunction)
+        self.inputBtn.bind("<Button>", self.transferEntry)
         self.EntryBox.pack()
         self.inputBtn.pack()
 
-    def checkNotationProper(self,inputList):
-        for item in inputList:
-            if item.lower() not in self.notations:
-                return False
-        return True
-    
 
-    def inputBtnFunction(self, event):
+    def transferEntry(self, event):
         EntryText = self.EntryBox.get()
-        NotationsSeparated = EntryText.split(" ") # separated by a whitespace make proper check eventually
-
-        if not self.checkNotationProper(NotationsSeparated):
-            print("Wrong input!")
+        formatNotation = self.notationChecker.formatString(EntryText)
+        if len(formatNotation) == 0:
+            print(WRONGFORMAT)
             return
         
-        print(NotationsSeparated)
 
+        self.addNotationImages(formatNotation)
+        
+    def addNotationImages(self, fn):
+        for item in fn:
+            imgFile = self.imageGen.getImage(item)
+            img = Image.open(imgFile)
+            img = img.resize((30,30), Image.ANTIALIAS)
+
+            im = ImageTk.PhotoImage(img)
+
+            img_label = ttk.Label(image=im)
+            img_label.image = im
+            img_label.pack()
+
+        

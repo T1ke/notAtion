@@ -1,9 +1,12 @@
 from src.GUI import Window 
-
+from src.notationChecker import NotationChecker
+from src.imageGenerator import ImageGenerator
 
 
 def main():
-    window = Window()
+    n = NotationChecker()
+    im = ImageGenerator()
+    window = Window(n, im)
     window.geometry("520x520")
     window.maxsize(width=1000, height=1000)
     window.minsize(width=300, height=300)
@@ -19,6 +22,9 @@ def getNotationsFromFiles(): ##
             notation = os.path.splitext(f)[0]
             notations.append(notation)
     print(notations)
+
+
+    
 
 if __name__ == "__main__":
     main()
