@@ -10,13 +10,17 @@ class NotationChecker():
         self.notations = getNotationList()
         
     def formatString(self, receivedEntry):
+        formattedList = []
         NotationsSeparated = receivedEntry.split(" ") # separated by a whitespace make proper check eventually 
         for item in NotationsSeparated:
             n = item.split(",")
-
-            if not self.checkNotationProper(n):
-                return ""
-        return NotationsSeparated
+            for i in n:
+                nn = i.replace("+", "")
+                if not self.checkNotationProper(nn):
+                    return []
+                
+                formattedList.append(nn)
+        return formattedList
 
     def checkNotationProper(self,inputList):
         for item in inputList:
