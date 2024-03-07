@@ -1,15 +1,18 @@
 from src.GUI import Window 
 from src.notationChecker import NotationChecker
 from src.imageGenerator import ImageGenerator
+from src.combos import Combos
 
 
 def main():
     n = NotationChecker()
     im = ImageGenerator()
-    window = Window(n, im)
-    window.geometry("520x520")
-    window.maxsize(width=1000, height=1000)
-    window.minsize(width=300, height=300)
+    c = Combos
+    window = Window(n, im, c)
+    window.geometry("500x500")
+    window.resizable(width=False, height=False)
+    #window.maxsize(width=1000, height=1000)
+    #window.minsize(width=300, height=300)
     window.mainloop()
 
 
